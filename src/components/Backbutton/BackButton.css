@@ -1,0 +1,15 @@
+.backButton-div {
+  width: 100%;
+}
+
+.backButton {
+  width: 14.152px;
+  height: 25px;
+  flex-shrink: 0;
+  fill: rgba(1, 22, 39, 0.5);
+  padding-left: 55px;
+}
+
+svg:hover {
+  cursor: pointer;
+}
