@@ -1,12 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './components/Login/Login';
-import Home from './components/Home/Home';
 import "../src/css/global.css"
-import Signup from './components/SignUp/Signup';
+import Login from './components/AccessManagement/Login';
+import Signup from './components/AccessManagement/Signup';
+import Home from './components/Home/Home';
 import DashBoard from './components/DashBoard/DashBoard';
-
-
 
 function App() {
   return (
