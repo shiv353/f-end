@@ -1,0 +1,15 @@
+.swift-backbutton-div {
+  width: 100%;
+}
+
+.swift-backbutton-div .swift-backbutton {
+  width: 14.152px;
+  height: 25px;
+  flex-shrink: 0;
+  fill: rgba(1, 22, 39, 0.5);
+  padding-left: 55px;
+}
+
+svg:hover {
+  cursor: pointer;
+}
