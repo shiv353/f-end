@@ -136,7 +136,7 @@ const LoginMain = () => {
         url: `${server}/access/validate-otp`,
         data: { email_id: formValues["email"], otp: formValues["otp"] },
       });
-      console.log(data1);
+
       if (data1.server_error) {
         setError(true);
       }
@@ -150,8 +150,6 @@ const LoginMain = () => {
     } else {
       setOtpError("OTP should be 6 length");
     }
-
-    console.log(formValues);
   };
 
   return (
@@ -268,7 +266,6 @@ const LoginPin = () => {
     } else {
       setPinError("Pin should be 4 digit");
     }
-    console.log(formValues);
   };
 
   return (
@@ -442,8 +439,6 @@ const LoginReset = () => {
     } else {
       setPinError("PIN should be atleast 4 digits");
     }
-
-    console.log(formValues);
   };
 
   return (
