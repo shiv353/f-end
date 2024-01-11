@@ -7,6 +7,8 @@ import CustomError from "../CustomComponents/CustomError/CustomError";
 import BackButton from "./BackButton";
 import InfoBox from "./InfoBox";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import ServerRequest from "../../utils/ServerRequest";
+import { server } from "../../App";
 
 const Login = () => {
   const location = useLocation();
@@ -36,28 +38,27 @@ const LoginMain = () => {
   const navigate = useNavigate();
 
   const [formValues, setFormValues] = useState({});
-
   const [otperror, setOtpError] = useState("error");
   const [emailerror, setEmailError] = useState("error");
-
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(true);
-
   const [otpVisible, setOtpVisible] = useState(false);
   const [textVisible, setTextVisible] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [error, setError] = useState(false);
 
   const handleInputChange = (name, value) => {
     setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
-  const ValidateEmail = () => {
+  useEffect(() => {
+    if (error) {
+      navigate("/404");
+    }
+  }, [error]);
+
+  const ValidateEmail = async () => {
     const email = formValues["email"];
-    const validEmails = [
-      "user1@gmail.com",
-      "user2@gmail.com",
-      "user3@gmail.com",
-    ];
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -65,13 +66,25 @@ const LoginMain = () => {
       return "Enter Valid Email";
     }
 
-    if (!validEmails.includes(email)) {
-      return "Email does not exist";
+    const data = await ServerRequest({
+      method: "get",
+      url: `${server}/access/login/email-validation?email_id=${email}`,
+    });
+
+    if (data.server_error) {
+      setError(true);
     }
+
+    if (data.error) {
+      return data.message;
+    }
+
+    formValues["data"] = data;
   };
 
-  const handleGenerateOtp = () => {
-    const error = ValidateEmail();
+  const handleGenerateOtp = async () => {
+    const error = await ValidateEmail();
+
     if (!error) {
       setEmailError("error");
       setOtpVisible(true);
@@ -79,6 +92,20 @@ const LoginMain = () => {
       setTextVisible(true);
       setIsButtonDisabled(true);
       setIsNextButtonDisabled(false);
+
+      const data1 = await ServerRequest({
+        method: "post",
+        url: `${server}/access/generate-otp`,
+        data: { email_id: formValues["email"] },
+      });
+
+      if (data1.server_error) {
+        setError(true);
+      }
+
+      if (data1.error) {
+        alert(data1.message);
+      }
 
       const countdownInterval = setInterval(() => {
         setCountdown((prevCountdown) => prevCountdown - 1);
@@ -99,13 +126,27 @@ const LoginMain = () => {
     }
   }, [countdown]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     setOtpError("error");
-
     if (isNextButtonDisabled) return;
+
     if (formValues["otp"] && formValues["otp"].length == 6) {
-      if (formValues["otp"] == "123456") navigate("/login/pin");
-      else setOtpError("OTP is not correct");
+      const data1 = await ServerRequest({
+        method: "post",
+        url: `${server}/access/validate-otp`,
+        data: { email_id: formValues["email"], otp: formValues["otp"] },
+      });
+      console.log(data1);
+      if (data1.server_error) {
+        setError(true);
+      }
+      if (data1.error) {
+        setOtpError(data1.message);
+      }
+      if (data1.error == false)
+        navigate("/login/pin", {
+          state: { email: formValues["email"], user_data: formValues["data"] },
+        });
     } else {
       setOtpError("OTP should be 6 length");
     }
@@ -190,6 +231,8 @@ const LoginMain = () => {
 
 const LoginPin = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { email, user_data } = location.state;
 
   const [formValues, setFormValues] = useState({});
   const [pinerror, setPinError] = useState("error");
@@ -198,12 +241,32 @@ const LoginPin = () => {
     setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    if (formValues["pin"] && formValues["pin"] == "1234") {
-      setPinError("error");
-      navigate("/");
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      navigate("/404");
+    }
+  }, [error]);
+
+  const handleSubmit = async (e) => {
+    setPinError("error");
+
+    if (formValues["pin"] && formValues["pin"].length == 4) {
+      const data1 = await ServerRequest({
+        method: "post",
+        url: `${server}/access/login/validate-pin`,
+        data: { email_id: email, pin: formValues["pin"] },
+      });
+      if (data1.error) {
+        setPinError(data1.message);
+      }
+      if (data1.server_error) {
+        setError(true);
+      }
+      if (data1.error == false) navigate("/");
     } else {
-      setPinError("Pin is not Correct");
+      setPinError("Pin should be 4 digit");
     }
     console.log(formValues);
   };
@@ -236,7 +299,7 @@ const LoginPin = () => {
                 visibility: pinerror != "error" ? "visible" : "hidden",
               }}
             />
-            <Link to="/login/reset">
+            <Link Link to="/login/reset" state={{ email: email }}>
               <button className="swift-login-form-reset-pin">Reset PIN</button>
             </Link>
           </div>
@@ -254,6 +317,8 @@ const LoginPin = () => {
 
 const LoginReset = () => {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const email_id = state.email;
 
   const [formValues, setFormValues] = useState({});
 
@@ -269,36 +334,68 @@ const LoginReset = () => {
   const [textVisible, setTextVisible] = useState(false);
   const [countdown, setCountdown] = useState(0);
 
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      navigate("/404");
+    }
+  }, [error]);
+
   const handleInputChange = (name, value) => {
     setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
-  const handleGenerateOtp = () => {
-    setOtpVisible(true);
-    setCountdown(30);
-    setTextVisible(true);
-    setIsButtonDisabled(true);
+  const handleGenerateOtp = async () => {
+    const data1 = await ServerRequest({
+      method: "post",
+      url: `${server}/access/generate-otp`,
+      data: { email_id: email_id },
+    });
 
-    const countdownInterval = setInterval(() => {
-      setCountdown((prevCountdown) => prevCountdown - 1);
-    }, 1000);
+    if (data1.error) {
+      alert(data1.message);
+    }
+    if (data1.server_error) {
+      setError(true);
+    }
+    if (data1.error == false) {
+      setOtpVisible(true);
+      setCountdown(30);
+      setTextVisible(true);
+      setIsButtonDisabled(true);
 
-    setTimeout(() => {
-      clearInterval(countdownInterval);
-      setIsButtonDisabled(false);
-    }, 30000);
+      const countdownInterval = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+
+      setTimeout(() => {
+        clearInterval(countdownInterval);
+        setIsButtonDisabled(false);
+      }, 30000);
+    }
   };
 
-  const handleValidate = () => {
+  const handleValidate = async () => {
+    setOtpError("error");
+
     if (formValues["otp"] && formValues["otp"].length == 6) {
-      if (formValues["otp"] === "123456") {
-        setOtpError("error");
+      const data1 = await ServerRequest({
+        method: "post",
+        url: `${server}/access/validate-otp`,
+        data: { email_id: email_id, otp: formValues["otp"] },
+      });
+      if (data1.server_error) {
+        alert(data1.message);
+      }
+      if (data1.error) {
+        setOtpError(data1.message);
+      }
+      if (data1.error == false) {
         setPinVisible(true);
         setIsButtonDisabled(true);
         setTextVisible(false);
         setIsResetButtonDisabled(false);
-      } else {
-        setOtpError("OTP is not correct");
       }
     } else {
       setOtpError("OTP should be 6 length");
@@ -311,19 +408,33 @@ const LoginReset = () => {
     }
   }, [countdown]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const pin = formValues["pin"];
     setPinError("error");
     setConfirmPinError("error");
     if (isResetButtonDisabled) return;
     if (formValues["pin"] && formValues["pin"].length == 4) {
-      setPinError();
+      setPinError("error");
       if (formValues["confirmpin"] && formValues["confirmpin"].length == 4) {
-        setConfirmPinError();
+        setConfirmPinError("error");
         if (formValues["confirmpin"] != formValues["pin"]) {
           setConfirmPinError("PIN does not match with above input");
         } else {
-          navigate("/login/resetsuccessful");
+          const data1 = await ServerRequest({
+            method: "put",
+            url: `${server}/access/reset-pin`,
+            data: { email_id: email_id, pin: formValues["pin"] },
+          });
+          if (data1.server_error) {
+            alert(data1.message);
+          }
+          if (data1.error) {
+            setPinError(data1.message);
+          }
+          if (data1.error == false) {
+            navigate("/login/resetsuccessful");
+          }
         }
       } else {
         setConfirmPinError("PIN should be atleast 4 digits");
