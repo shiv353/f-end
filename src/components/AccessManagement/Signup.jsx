@@ -314,7 +314,6 @@ const SignupPin = () => {
           errorText={pinerror}
           style={{
             visibility: pinerror != "error" ? "visible" : "hidden",
-            // visibility: pinerror ? "visible" : "hidden",
           }}
         />
         <CustomInput
