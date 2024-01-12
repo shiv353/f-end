@@ -5,6 +5,7 @@ import Login from './components/AccessManagement/Login';
 import Signup from './components/AccessManagement/Signup';
 import Home from './components/Home/Home';
 import DashBoard from './components/DashBoard/DashBoard';
+import Error from './components/Error';
 
 function App() {
   return (
@@ -14,12 +15,12 @@ function App() {
         <Route path="/login/*" element={<Login />} />
         <Route path='/signup/*' element={<Signup />} />
         <Route path='/dashboard' element={<DashBoard />} />
+        <Route path='/404' element={<Error />} />
       </Routes>
     </Router>
   );
 }
 
-export const server = "http://localhost:5000/api/v1"
 
 export default App;
 
