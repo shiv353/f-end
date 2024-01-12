@@ -6,8 +6,8 @@ import CustomError from "../CustomComponents/CustomError/CustomError";
 import BackButton from "./BackButton";
 import InfoBox from "./InfoBox";
 import { useLocation, useNavigate } from "react-router-dom";
-import { server } from "../../App";
 import ServerRequest from "../../utils/ServerRequest";
+const { isEmpty, validateEmail, checkLength } = require("../../utils/Validation");
 
 const Signup = () => {
   const location = useLocation();
@@ -64,18 +64,17 @@ const SignupMain = () => {
   const ValidateEmail = async () => {
     const email = formValues["email"];
 
-    const emailRegex = /^[a-zA-Z0-9. _-]+@[a-zA-Z0-9. -]+\.[a-zA-Z]{2,4}$/;
-
-    if (!email || email.trim() === "") {
+    if(isEmpty(email)){
       return "Email can not be empty";
     }
-    if (!emailRegex.test(email)) {
-      return "Email is not Valid";
+
+    if(!validateEmail(email)){
+      return "Email is not valid";
     }
 
     const data = await ServerRequest({
       method: "post",
-      url: `${server}/access/signup/email-validation`,
+      URL: `/access/signup/email-validation`,
       data: { email_id: formValues["email"] },
     });
 
@@ -99,7 +98,7 @@ const SignupMain = () => {
 
       const data1 = await ServerRequest({
         method: "post",
-        url: `${server}/access/generate-otp`,
+        URL: `/access/generate-otp`,
         data: { email_id: formValues["email"] },
       });
       // console.log(data1);
@@ -133,10 +132,10 @@ const SignupMain = () => {
   const handleSubmit = async (e) => {
     if (isNextButtonDisabled) return;
     setOtpError("error");
-    if (formValues["otp"] && formValues["otp"].length == 6) {
+    if (formValues["otp"] && checkLength(formValues["otp"],6)) {
       const data1 = await ServerRequest({
         method: "post",
-        url: `${server}/access/validate-otp`,
+        URL: `/access/validate-otp`,
         data: { email_id: formValues["email"], otp: formValues["otp"] },
       });
       console.log(data1);
@@ -253,16 +252,16 @@ const SignupPin = () => {
   const handleSubmit = async (e) => {
     setPinError("error");
     setConfirmPinError("error");
-    if (formValues["pin"] && formValues["pin"].length == 4) {
+    if (formValues["pin"] && checkLength(formValues["pin"],4)) {
       setPinError("error");
-      if (formValues["confirmpin"] && formValues["confirmpin"].length == 4) {
+      if (formValues["confirmpin"] && checkLength(formValues["confirmpin"],4)) {
         setConfirmPinError("error");
         if (formValues["confirmpin"] != formValues["pin"]) {
           setConfirmPinError("PIN does not match ");
         } else {
           const data1 = await ServerRequest({
             method: "get",
-            url: `${server}/access/signup/set-pin?email_id=${email}&pin=${formValues["pin"]}`,
+            URL: `/access/signup/set-pin?email_id=${email}&pin=${formValues["pin"]}`,
           });
 
           console.log(data1);
