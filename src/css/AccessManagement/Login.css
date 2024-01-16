@@ -245,3 +245,19 @@
     height: 50px;
   }
 }
+
+@media only screen and (max-width: 450px) {
+  .swift-login-main {
+    justify-content: normal;
+    align-items: normal;
+  }
+
+  .swift-login-main .swift-login-form {
+    height: 100vh;
+    box-shadow: 0px 0px 0px 0px #ccc;
+  }
+
+  .swift-login-main .swift-login-form-btn {
+    margin: auto;
+  }
+}

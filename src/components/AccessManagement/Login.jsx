@@ -556,6 +556,10 @@ const LoginReset = () => {
 };
 
 const LoginResetSuccessful = () => {
+  const navigate = useNavigate();
+  const handlerSubmit = () => {
+    navigate("/login");
+  };
   return (
     <>
       <div className="swift-login-form">
@@ -594,9 +598,13 @@ const LoginResetSuccessful = () => {
           <p>PIN reset has been successful</p>
         </div>
 
-        <Link to="/login">
-          <CustomButton text="Login Again" classname="swift-login-form-btn" />
-        </Link>
+        {/* <Link to="/login" classname="swift-login-form-btn"> */}
+        <CustomButton
+          text="Login Again"
+          classname="swift-login-form-btn"
+          onClick={handlerSubmit}
+        />
+        {/* </Link> */}
       </div>
     </>
   );
