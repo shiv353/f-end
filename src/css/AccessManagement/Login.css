@@ -33,7 +33,7 @@
   padding: 30px;
 }
 .swift-login-main .swift-reset-form {
-  height: 95%;
+  height: 90%;
 }
 
 .swift-login-main .swift-login-form-div-1 {
@@ -102,7 +102,7 @@
 
 .swift-login-main .swift-login-form-otp-input {
   width: 160px;
-  height: 60px;
+  height: 50px;
 }
 
 .swift-login-main .swift-login-form-email-input {
@@ -175,7 +175,7 @@
 .swift-login-main .swift-login-form-pin-input1,
 .swift-login-main .swift-login-form-otp-input {
   width: 160px;
-  height: 60px;
+  height: 50px;
 }
 
 .swift-login-main .swift-login-form-validate-btn {
