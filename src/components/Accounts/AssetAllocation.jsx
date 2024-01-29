@@ -31,6 +31,56 @@ const AssetAllocation = () => {
       content:
         "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
     },
+    {
+      heading: "TA Balanced",
+      content:
+        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
+    },
+    {
+      heading: "TA Balanced",
+      content:
+        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
+    },
+    {
+      heading: "TA Balanced",
+      content:
+        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
+    },
+    {
+      heading: "TA Balanced",
+      content:
+        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
+    },
+    {
+      heading: "TA Balanced",
+      content:
+        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
+    },
+    {
+      heading: "TA Balanced",
+      content:
+        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
+    },
+    {
+      heading: "TA Balanced",
+      content:
+        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
+    },
+    {
+      heading: "TA Balanced",
+      content:
+        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
+    },
+    {
+      heading: "TA Balanced",
+      content:
+        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
+    },
+    {
+      heading: "TA Balanced",
+      content:
+        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
+    },
   ];
 
   const [selectedStrategy, setSelectedStrategy] = useState(0);
