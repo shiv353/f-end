@@ -35,8 +35,9 @@
   display: flex;
   flex-direction: column;
   row-gap: 15px;
-  height: 80vh;
+  height: 75vh;
   overflow-y: auto;
+  align-items: center;
 }
 
 
@@ -86,7 +87,7 @@
 .swift-accounts-content-btn {
   display: flex;
   justify-content: center;
-  height: 11vh;
+  height: 10vh;
   align-items: center;
 }
 
