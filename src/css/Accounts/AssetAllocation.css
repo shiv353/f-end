@@ -38,6 +38,27 @@
   height: 80vh;
   overflow-y: auto;
 }
+
+
+.swift-accounts-content-strategy ::-webkit-scrollbar {
+  width: 11px;
+}
+
+.swift-accounts-content-strategy ::-webkit-scrollbar-thumb {
+  background-color: #E8E8E8;
+  border-radius: 34px;
+  height: 98px;
+}
+
+.swift-accounts-content-strategy ::-webkit-scrollbar-track {
+  background-color: #eee;
+}
+
+.swift-accounts-content-strategy ::-webkit-scrollbar-thumb:hover {
+  background-color: #ccc; 
+}
+
+
 .swift-accounts-content-right {
   /* border: 2px solid black; */
   width: 80%;
@@ -65,6 +86,8 @@
 .swift-accounts-content-btn {
   display: flex;
   justify-content: center;
+  height: 11vh;
+  align-items: center;
 }
 
 .swift-accounts-content-details {
