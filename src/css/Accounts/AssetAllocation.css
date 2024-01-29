@@ -41,21 +41,21 @@
 }
 
 
-.swift-accounts-content-strategy ::-webkit-scrollbar {
+.swift-accounts-content-strategy::-webkit-scrollbar {
   width: 11px;
 }
 
-.swift-accounts-content-strategy ::-webkit-scrollbar-thumb {
+.swift-accounts-content-strategy::-webkit-scrollbar-thumb {
   background-color: #E8E8E8;
   border-radius: 34px;
   height: 98px;
 }
 
-.swift-accounts-content-strategy ::-webkit-scrollbar-track {
+.swift-accounts-content-strategy::-webkit-scrollbar-track {
   background-color: #eee;
 }
 
-.swift-accounts-content-strategy ::-webkit-scrollbar-thumb:hover {
+.swift-accounts-content-strategy::-webkit-scrollbar-thumb:hover {
   background-color: #ccc; 
 }
 
